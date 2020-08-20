@@ -3,7 +3,7 @@ import numpy as np
 import re
 from transformers import RobertaTokenizerFast, RobertaForTokenClassification
 
-class BulgarianPOSTagger():
+class POSTagger():
 
     def __init__(self, use_gpu=True):
         self._set_device(use_gpu)
