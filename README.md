@@ -12,7 +12,7 @@ cd bulgarian-nlp
 
 Now POS tags can be generated like this:
 ```python
-from bulgarian-nlp.models.postagger import POSTagger
+from models.postagger import POSTagger
 
 pos_tagger = POSTagger()
 pos_tagger.generate_tags('Аз сьм мьж.')
