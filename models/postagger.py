@@ -7,7 +7,7 @@ class POSTagger():
 
     def __init__(self, use_gpu=True):
         self._set_device(use_gpu)
-        MODEL_NAME = 'iarfmoose/roberta-base-bulgarian-pos'
+        MODEL_NAME = 'iarfmoose/roberta-small-bulgarian-pos'
         self.tokenizer = RobertaTokenizerFast.from_pretrained(MODEL_NAME)
         self.model = RobertaForTokenClassification.from_pretrained(MODEL_NAME)
         self.model.to(self.device)
@@ -70,9 +70,8 @@ class POSTagger():
     def _get_relevant_labels(self, offset_mapping):
         relevant_labels = np.zeros(len(offset_mapping), dtype=int)
 
-        for i in range(1, len(offset_mapping)):
-            if (self._ignore_mapping(offset_mapping[i-1]) 
-                or offset_mapping[i-1][-1] != offset_mapping[i][0]):
+        for i in range(1, len(offset_mapping) - 1):
+            if offset_mapping[i][1] != offset_mapping[i+1][0]:
                 if not self._ignore_mapping(offset_mapping[i]):
                     relevant_labels[i] = 1
 
