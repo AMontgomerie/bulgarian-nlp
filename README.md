@@ -6,7 +6,7 @@ This is a part-of-speech tagger for Bulgarian.
 
 First clone the repository and make sure the transformers library is installed
 ```
-git clone https://github.com/iarfmoose/bulgarian-nlp
+git clone https://github.com/amontgomerie/bulgarian-nlp
 cd bulgarian-nlp
 ```
 
