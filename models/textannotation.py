@@ -87,8 +87,6 @@ class POSTagger(Tagger):
 
         self.id_to_tag = {self.tag_to_id[tag]: tag for tag in self.tag_to_id}  
 
-from tagger import Tagger
-
 
 class NERTagger(Tagger):
 
