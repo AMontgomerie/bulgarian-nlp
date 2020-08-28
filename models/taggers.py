@@ -9,18 +9,16 @@ class Tagger():
     
     def __init__(self, use_gpu=True):
         self._set_device(use_gpu)
-        self.name = 'tagger'
     
     def _set_device(self, use_gpu):
         if use_gpu:
             if torch.cuda.is_available():
                 self.device = torch.device('cuda')
             else:
-                print("{}: GPU unavailable, using CPU.".format(self.name))
                 self.device = torch.device('cpu')
         else:
             self.device = torch.device('cpu')
-	
+    	
     def generate_tags(self, input_text):
         processed_text = self._preprocess_punctuation(input_text)
         tokenized_text = self._tokenize_text(processed_text)
@@ -77,7 +75,6 @@ class POSTagger(Tagger):
 
     def __init__(self, use_gpu=True):
         super().__init__()
-        self.name = 'POSTagger'
         MODEL_NAME = 'iarfmoose/roberta-small-bulgarian-pos'
         self.tokenizer = RobertaTokenizerFast.from_pretrained(MODEL_NAME)
         self.model = RobertaForTokenClassification.from_pretrained(MODEL_NAME)
@@ -94,7 +91,6 @@ class NERTagger(Tagger):
 
     def __init__(self, use_gpu=True):
         super().__init__()
-        self.name = 'NERTagger'
         MODEL_NAME = 'iarfmoose/roberta-small-bulgarian-ner'
         self.tokenizer = RobertaTokenizerFast.from_pretrained(MODEL_NAME)
 
