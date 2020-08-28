@@ -7,8 +7,10 @@ MAX_LEN = 128
 
 class Tagger():
     
-    def __init__(self, use_gpu=True):
+    def __init__(self, use_gpu=True, tokenizer=None):
         self._set_device(use_gpu)
+        if tokenizer:
+            self.tokenizer = tokenizer
     
     def _set_device(self, use_gpu):
         if use_gpu:
@@ -73,10 +75,13 @@ class Tagger():
 		
 class POSTagger(Tagger):
 
-    def __init__(self, use_gpu=True):
+    def __init__(self, use_gpu=True, tokenizer=None):
         super().__init__()
         MODEL_NAME = 'iarfmoose/roberta-small-bulgarian-pos'
-        self.tokenizer = RobertaTokenizerFast.from_pretrained(MODEL_NAME)
+        if tokenizer:
+            self.tokenizer = tokenizer
+        else:
+            self.tokenizer = RobertaTokenizerFast.from_pretrained(MODEL_NAME)
         self.model = RobertaForTokenClassification.from_pretrained(MODEL_NAME)
         self.model.to(self.device)
 
@@ -89,10 +94,13 @@ class POSTagger(Tagger):
 
 class NERTagger(Tagger):
 
-    def __init__(self, use_gpu=True):
+    def __init__(self, use_gpu=True, tokenizer=None):
         super().__init__()
         MODEL_NAME = 'iarfmoose/roberta-small-bulgarian-ner'
-        self.tokenizer = RobertaTokenizerFast.from_pretrained(MODEL_NAME)
+        if tokenizer:
+            self.tokenizer = tokenizer
+        else:
+            self.tokenizer = RobertaTokenizerFast.from_pretrained(MODEL_NAME)
 
         self.model = RobertaForTokenClassification.from_pretrained(MODEL_NAME)
         self.model.to(self.device)
