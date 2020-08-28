@@ -13,7 +13,7 @@ cd bulgarian-nlp
 ### Part-Of-Speech tagging
 Now POS tags can be generated like this:
 ```python
-from models.postagger import POSTagger
+from models.textannotation import POSTagger
 
 pos_tagger = POSTagger()
 pos_tagger.generate_tags('Аз сьм мьж.')
@@ -27,7 +27,7 @@ For more information about the POS tags, see https://universaldependencies.org/u
 ### Named Entity Recognition
 NER tags can be generated using:
 ```python
-from models.nertagger import NERTagger
+from models.textannotation import NERTagger
 
 ner_tagger = NERTagger()
 ner_tagger.generate_tags('България е член на ЕС в Европа.')
