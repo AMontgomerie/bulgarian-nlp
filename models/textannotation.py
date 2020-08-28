@@ -1,4 +1,4 @@
-from taggers import POSTagger, NERTagger
+from models.taggers import POSTagger, NERTagger
 from transformers import RobertaTokenizerFast
 import re
 
