@@ -37,3 +37,7 @@ Which outputs:
 ['B-LOC', 'O', 'O', 'O', 'B-ORG', 'O', 'B-LOC', 'O']
 ```
 For more information about the NER tag format, see https://en.wikipedia.org/wiki/Inside%E2%80%93outside%E2%80%93beginning_(tagging)
+
+## Known Issues
+- The POS tagger sometimes misclassifies verbs.
+- The NER tagger is not very good at identifying products or events.
