@@ -19,6 +19,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--accumulation_steps", type=int, default=1)
     parser.add_argument("--batch_size", type=int, default=8)
+    parser.add_argument("--config_source", type=str, default="roberta-base")
     parser.add_argument("--data_dir", type=str, default="./bg_data")
     parser.add_argument("--dataloader_num_workers", type=int, default=2)
     parser.add_argument("--device", type=str, default="cuda")
@@ -26,16 +27,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--learning_rate", type=float, default=1e-5)
     parser.add_argument("--logging_steps", type=int, default=1000)
     parser.add_argument("--max_length", type=int, default=512)
-    parser.add_argument("--max_position_embeddings", type=int, default=514)
     parser.add_argument("--mlm_probability", type=float, default=0.15)
-    parser.add_argument("--num_attention_heads", type=int, default=12)
-    parser.add_argument("--num_hidden_layers", type=int, default=6)
     parser.add_argument("--save_dir", type=str, default="./roberta-small-bg")
     parser.add_argument("--save_steps", type=int, default=2000)
     parser.add_argument("--scheduler", type=str, default="linear")
     parser.add_argument("--seed", type=int, default=666)
     parser.add_argument("--test_size", type=float, default=0.1)
-    parser.add_argument("--type_vocab_size", type=int, default=1)
     parser.add_argument("--vocab_size", type=int, default=52000)
     parser.add_argument("--vocab_min_frequency", type=int, default=2)
     parser.add_argument("--warmup", type=float, default=0.05)
@@ -57,13 +54,7 @@ if __name__ == "__main__":
     )
     train_dataset = PretrainingDataset(train_data, tokenizer, args.max_length)
     test_dataset = PretrainingDataset(test_data, tokenizer, args.max_length)
-    config = AutoConfig(
-        vocab_size=args.vocab_size,
-        max_position_embeddings=args.max_position_embeddings,
-        num_attention_heads=args.num_attention_heads,
-        num_hidden_layers=args.num_hidden_layers,
-        type_vocab_size=args.type_vocab_size,
-    )
+    config = AutoConfig.from_pretrained(args.config_source, vocab_size=args.vocab_size)
     model = AutoModelForMaskedLM(config=config)
     collator = DataCollatorForLanguageModeling(
         tokenizer=tokenizer, mlm=True, mlm_probability=args.mlm_probability
