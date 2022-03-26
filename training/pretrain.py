@@ -55,8 +55,8 @@ if __name__ == "__main__":
     train_data, test_data = train_test_split(
         text_data, test_size=args.test_size, random_state=args.seed
     )
-    train_dataset = PretrainingDataset(train_data, tokenizer)
-    test_dataset = PretrainingDataset(test_data, tokenizer)
+    train_dataset = PretrainingDataset(train_data, tokenizer, args.max_length)
+    test_dataset = PretrainingDataset(test_data, tokenizer, args.max_length)
     config = AutoConfig(
         vocab_size=args.vocab_size,
         max_position_embeddings=args.max_position_embeddings,
