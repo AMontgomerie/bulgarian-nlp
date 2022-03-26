@@ -1,9 +1,21 @@
+from tqdm import tqdm
 from transformers import AutoTokenizer
 from typing import List
 
-def prepare_pretraining_data(tokenizer: AutoTokenizer, file_paths: List[str], max_length: int) -> List[str]:
+
+def prepare_pretraining_data(
+    tokenizer: AutoTokenizer, file_paths: List[str], max_length: int
+) -> List[str]:
+    lines = build_textline_list(file_paths)
+    print("Packing sequences...")
+    packed_sequences = pack_sequences(lines, tokenizer, max_length)
+    return packed_sequences
+
+
+def build_textline_list(file_paths: List[str]):
     lines = []
     i = 1
+
     for path in file_paths:
         print("Reading {}/{} {}".format(i, len(file_paths), path))
         with open(path, encoding="utf-8") as f:
@@ -15,24 +27,17 @@ def prepare_pretraining_data(tokenizer: AutoTokenizer, file_paths: List[str], ma
                 ]
             )
         i += 1
-    print("Packing sequences...")
-    packed_sequences = pack_sequences(lines, tokenizer, max_length)
-    print("Dataset ready.")
-    return packed_sequences
 
-def pack_sequences(text: str, tokenizer: AutoTokenizer, max_length: int) -> List[str]:
+    return lines
+
+
+def pack_sequences(texts: List[str], tokenizer: AutoTokenizer, max_length: int) -> List[str]:
     data = []
     concat_len = 0
     concat_string = ""
     i = 0
-    checkpoints = [i for i in range(10, 110, 10)]
 
-    for line in text:
-        percent = round((i / len(text)) * 100)
-        if percent in checkpoints:
-            print("{}% complete".format(percent))
-            checkpoints.pop(0)
-
+    for line in tqdm(texts):
         # first tokenize the current line
         encoding = tokenizer.encode_plus(line, truncation=True)
         tokenized_line = encoding["input_ids"]

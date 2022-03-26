@@ -10,9 +10,9 @@ from transformers import (
     DataCollatorForLanguageModeling,
 )
 
-from train_tokenizer import train_tokenizer
-from dataset_classes import PretrainingDataset
 from bg_data_preprocessing import prepare_pretraining_data
+from dataset_classes import PretrainingDataset
+from train_tokenizer import train_tokenizer
 
 
 def parse_args() -> argparse.Namespace:
