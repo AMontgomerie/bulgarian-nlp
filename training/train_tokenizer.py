@@ -19,7 +19,7 @@ def train_tokenizer(
     vocab_size: int,
     vocab_min_frequency: int,
 ):
-    data_paths = [os.path.join(args.data_dir, f) for f in os.listdir(data_dir)]
+    data_paths = [os.path.join(data_dir, f) for f in os.listdir(data_dir)]
     tokenizer = ByteLevelBPETokenizer()
     tokenizer.train(
         files=data_paths,
