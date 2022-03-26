@@ -52,7 +52,11 @@ if __name__ == "__main__":
     except OSError:
         print(f"Pretrained tokenizer not found at {args.save_dir}. Training...")
         train_tokenizer(
-            args.data_dir, args.save_dir, args.vocab_size, args.vocab_min_frequency
+            args.data_dir,
+            args.save_dir,
+            args.config_source,
+            args.vocab_size,
+            args.vocab_min_frequency,
         )
         tokenizer = AutoTokenizer.from_pretrained(
             args.save_dir, model_max_length=args.max_length
