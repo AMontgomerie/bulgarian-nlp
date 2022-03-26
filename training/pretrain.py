@@ -44,6 +44,7 @@ def parse_args() -> argparse.Namespace:
 
 if __name__ == "__main__":
     args = parse_args()
+    os.makedirs(args.save_dir, exist_ok=True)
 
     try:
         tokenizer = AutoTokenizer.from_pretrained(
@@ -54,7 +55,6 @@ if __name__ == "__main__":
         train_tokenizer(
             args.data_dir,
             args.save_dir,
-            args.config_source,
             args.vocab_size,
             args.vocab_min_frequency,
         )

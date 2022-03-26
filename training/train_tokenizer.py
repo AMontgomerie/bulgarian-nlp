@@ -8,7 +8,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--device", type=str, default="cuda")
     parser.add_argument("--save_dir", type=str, default="./roberta-small-bg")
     parser.add_argument("--data_dir", type=str, default="./bg_data")
-    parser.add_argument("--model_name", type=str, default="roberta-base")
     parser.add_argument("--vocab_size", type=int, default=52000)
     parser.add_argument("--vocab_min_frequency", type=int, default=2)
     return parser.parse_args()
@@ -17,7 +16,6 @@ def parse_args() -> argparse.Namespace:
 def train_tokenizer(
     data_dir: str,
     save_dir: str,
-    model_name: str,
     vocab_size: int,
     vocab_min_frequency: int,
 ):
@@ -30,15 +28,11 @@ def train_tokenizer(
         show_progress=True,
         special_tokens=["<s>", "<pad>", "</s>", "<unk>", "<mask>"],
     )
-    tokenizer.save_model(save_dir, model_name)
+    tokenizer.save_model(".", save_dir)
 
 
 if __name__ == "__main__":
     args = parse_args()
     train_tokenizer(
-        args.data_dir,
-        args.save_dir,
-        args.vocab_size,
-        args.vocab_min_frequency,
-        args.max_length,
+        args.data_dir, args.save_dir, args.vocab_size, args.vocab_min_frequency
     )
