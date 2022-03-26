@@ -44,12 +44,20 @@ def parse_args() -> argparse.Namespace:
 
 if __name__ == "__main__":
     args = parse_args()
-    train_tokenizer(
-        args.data_dir, args.save_dir, args.vocab_size, args.vocab_min_frequency
-    )
-    tokenizer = AutoTokenizer.from_pretrained(
-        args.save_dir, model_max_length=args.max_length
-    )
+
+    try:
+        tokenizer = AutoTokenizer.from_pretrained(
+            args.save_dir, model_max_length=args.max_length
+        )
+    except OSError:
+        print(f"Pretrained tokenizer not found at {args.save_dir}. Training...")
+        train_tokenizer(
+            args.data_dir, args.save_dir, args.vocab_size, args.vocab_min_frequency
+        )
+        tokenizer = AutoTokenizer.from_pretrained(
+            args.save_dir, model_max_length=args.max_length
+        )
+
     data_paths = [os.path.join(args.data_dir, f) for f in os.listdir(args.data_dir)]
     text_data = prepare_pretraining_data(data_paths, tokenizer, args.max_length)
     train_data, test_data = train_test_split(
