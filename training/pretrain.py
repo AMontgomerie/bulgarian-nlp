@@ -28,7 +28,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--logging_steps", type=int, default=1000)
     parser.add_argument("--max_length", type=int, default=512)
     parser.add_argument("--mlm_probability", type=float, default=0.15)
-    parser.add_argument("--save_dir", type=str, default="./roberta-small-bg")
+    parser.add_argument("--save_dir", type=str, default="./roberta-base-bulgarian")
     parser.add_argument("--save_steps", type=int, default=2000)
     parser.add_argument("--scheduler", type=str, default="linear")
     parser.add_argument("--seed", type=int, default=666)
