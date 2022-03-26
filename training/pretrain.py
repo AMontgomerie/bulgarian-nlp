@@ -24,18 +24,21 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--dataloader_num_workers", type=int, default=2)
     parser.add_argument("--device", type=str, default="cuda")
     parser.add_argument("--epochs", type=int, default=1)
+    parser.add_argument("--eval_accumulation_steps", type=int, default=32)
+    parser.add_argument("--eval_steps", type=int, default=2000)
     parser.add_argument("--learning_rate", type=float, default=1e-5)
     parser.add_argument("--logging_steps", type=int, default=1000)
     parser.add_argument("--max_length", type=int, default=512)
     parser.add_argument("--mlm_probability", type=float, default=0.15)
     parser.add_argument("--save_dir", type=str, default="./roberta-base-bulgarian")
-    parser.add_argument("--save_steps", type=int, default=2000)
+    parser.add_argument("--save_total_limit", type=int, default=1)
     parser.add_argument("--scheduler", type=str, default="linear")
     parser.add_argument("--seed", type=int, default=666)
     parser.add_argument("--test_size", type=float, default=0.1)
     parser.add_argument("--vocab_size", type=int, default=52000)
     parser.add_argument("--vocab_min_frequency", type=int, default=2)
     parser.add_argument("--warmup", type=float, default=0.05)
+    parser.add_argument("--weight_decay", type=float, default=0.01)
     return parser.parse_args()
 
 
@@ -61,6 +64,9 @@ if __name__ == "__main__":
     )
     training_args = TrainingArguments(
         dataloader_num_workers=args.num_workers,
+        eval_accumulation_steps=args.eval_accumulation_steps,
+        eval_steps=args.eval_steps,
+        evaluation_strategy="steps",
         fp16=True,
         gradient_accumulation_steps=args.accumulation_steps,
         learning_rate=args.learning_rate,
@@ -70,9 +76,11 @@ if __name__ == "__main__":
         overwrite_output_dir=True,
         per_device_train_batch_size=args.batch_size,
         report_to="none",
+        save_steps=args.eval_steps,
+        save_total_limit=args.save_total_limit,
         seed=args.seed,
         warmup_ratio=args.warmup,
-        save_steps=args.save_steps,
+        weight_decay=args.weight_decay,
     )
     trainer = Trainer(
         model=model,

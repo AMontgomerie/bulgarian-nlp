@@ -28,7 +28,7 @@ def train_tokenizer(
         show_progress=True,
         special_tokens=["<s>", "<pad>", "</s>", "<unk>", "<mask>"],
     )
-    tokenizer.save(save_dir)
+    tokenizer.save_pretrained(save_dir)
 
 
 if __name__ == "__main__":
