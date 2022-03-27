@@ -1,7 +1,7 @@
 import argparse
 import os
 from tokenizers import ByteLevelBPETokenizer
-from transformers import AutoTokenizer, RobertaTokenizerFast, PretrainedTokenizer
+from transformers import AutoTokenizer, RobertaTokenizerFast, PreTrainedTokenizer
 
 
 def parse_args() -> argparse.Namespace:
