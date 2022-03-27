@@ -95,7 +95,9 @@ if __name__ == "__main__":
     test_dataset = PretrainingDataset(test_data, tokenizer, args.max_length)
     config_class = get_config_class(args.config_source)
     model_class = get_model_class(args.config_source)
-    config = config_class.from_pretrained(args.config_source, vocab_size=args.vocab_size)
+    config = config_class.from_pretrained(
+        args.config_source, vocab_size=args.vocab_size
+    )
     model = model_class(config=config)
     collator = DataCollatorForLanguageModeling(
         tokenizer=tokenizer,
@@ -104,7 +106,7 @@ if __name__ == "__main__":
         pad_to_multiple_of=2,
     )
     training_args = TrainingArguments(
-        dataloader_num_workers=args.num_workers,
+        dataloader_num_workers=args.dataloader_num_workers,
         eval_accumulation_steps=args.eval_accumulation_steps,
         eval_steps=args.eval_steps,
         evaluation_strategy="steps",
