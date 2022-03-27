@@ -18,7 +18,7 @@ class PretrainingDataset(Dataset):
         inputs = self.tokenizer(
             text,
             add_special_tokens=True,
-            truncation="max_length",
+            truncation=True,
             max_length=self.max_length,
         )
         return inputs
