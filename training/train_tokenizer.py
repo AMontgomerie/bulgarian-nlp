@@ -53,6 +53,7 @@ def get_tokenizer_type(model_name: str) -> PreTrainedTokenizer:
 
 if __name__ == "__main__":
     args = parse_args()
+    os.makedirs(args.save_dir, exist_ok=True)
     train_tokenizer(
         args.model_type,
         args.data_dir,
