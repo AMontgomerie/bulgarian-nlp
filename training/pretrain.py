@@ -65,7 +65,7 @@ if __name__ == "__main__":
         )
 
     data_paths = [os.path.join(args.data_dir, f) for f in os.listdir(args.data_dir)]
-    text_data = prepare_pretraining_data(data_paths, tokenizer, args.max_length)
+    text_data = prepare_pretraining_data(tokenizer, data_paths, args.max_length)
     train_data, test_data = train_test_split(
         text_data, test_size=args.test_size, random_state=args.seed
     )
