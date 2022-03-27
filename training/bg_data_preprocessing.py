@@ -10,7 +10,6 @@ def prepare_pretraining_data(
     pack_sequences_to_max_length: bool = False,
 ) -> List[str]:
     texts = build_textline_list(file_paths)
-    print("Packing sequences...")
     if pack_sequences_to_max_length:
         texts = pack_sequences(texts, tokenizer, max_length)
     return texts
@@ -43,6 +42,7 @@ def pack_sequences(
     concat_string = ""
     i = 0
 
+    print("Packing sequences...")
     for line in tqdm(texts):
         # first tokenize the current line
         encoding = tokenizer.encode_plus(line, truncation=True)
