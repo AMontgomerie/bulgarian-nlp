@@ -5,6 +5,7 @@ from transformers import (
     AutoConfig,
     AutoModelForMaskedLM,
     AutoTokenizer,
+    EarlyStoppingCallback,
     PretrainedConfig,
     PreTrainedModel,
     RobertaConfig,
@@ -28,6 +29,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--data_dir", type=str, default="./bg_data")
     parser.add_argument("--dataloader_num_workers", type=int, default=2)
     parser.add_argument("--device", type=str, default="cuda")
+    parser.add_argument("--early_stopping_patience", type=int, default=5)
     parser.add_argument("--epochs", type=int, default=1)
     parser.add_argument("--eval_accumulation_steps", type=int, default=128)
     parser.add_argument("--eval_steps", type=int, default=10000)
@@ -115,6 +117,7 @@ if __name__ == "__main__":
         fp16=True,
         gradient_accumulation_steps=args.accumulation_steps,
         learning_rate=args.learning_rate,
+        load_best_model_at_end=True
         logging_steps=args.logging_steps,
         lr_scheduler_type=args.scheduler,
         num_train_epochs=args.epochs,
@@ -129,12 +132,16 @@ if __name__ == "__main__":
         warmup_ratio=args.warmup,
         weight_decay=args.weight_decay,
     )
+    early_stopping = EarlyStoppingCallback(
+        early_stopping_patience=args.early_stopping_patience
+    )
     trainer = Trainer(
         model=model,
         args=training_args,
         data_collator=collator,
         train_dataset=train_dataset,
         eval_dataset=test_dataset,
+        callbacks = [early_stopping]
     )
 
     if args.checkpoint_dir:
