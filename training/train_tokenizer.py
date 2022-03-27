@@ -42,7 +42,7 @@ def train_tokenizer(
     tokenizer.save_pretrained(save_dir)
 
 
-def get_tokenizer_type(model_name: str) -> PretrainedTokenizer:
+def get_tokenizer_type(model_name: str) -> PreTrainedTokenizer:
     tokenizer_class = AutoTokenizer
 
     if "roberta" in model_name:
