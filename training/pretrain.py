@@ -5,6 +5,10 @@ from transformers import (
     AutoConfig,
     AutoModelForMaskedLM,
     AutoTokenizer,
+    PretrainedConfig,
+    PreTrainedModel,
+    RobertaConfig,
+    RobertaForMaskedLM,
     Trainer,
     TrainingArguments,
     DataCollatorForLanguageModeling,
@@ -42,6 +46,24 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def get_model_class(model_name: str) -> PreTrainedModel:
+    model_class = AutoModelForMaskedLM
+
+    if "roberta" in model_name:
+        model_class = RobertaForMaskedLM
+
+    return model_class
+
+
+def get_config_class(model_name: str) -> PretrainedConfig:
+    model_class = AutoConfig
+
+    if "roberta" in model_name:
+        model_class = RobertaConfig
+
+    return model_class
+
+
 if __name__ == "__main__":
     args = parse_args()
     os.makedirs(args.save_dir, exist_ok=True)
@@ -71,8 +93,10 @@ if __name__ == "__main__":
     )
     train_dataset = PretrainingDataset(train_data, tokenizer, args.max_length)
     test_dataset = PretrainingDataset(test_data, tokenizer, args.max_length)
-    config = AutoConfig.from_pretrained(args.config_source, vocab_size=args.vocab_size)
-    model = AutoModelForMaskedLM.from_pretrained(args.config_source, config=config)
+    config_class = get_config_class(args.config_source)
+    model_class = get_model_class(args.config_source)
+    config = config_class.from_pretrained(args.config_source, vocab_size=args.vocab_size)
+    model = model_class(config=config)
     collator = DataCollatorForLanguageModeling(
         tokenizer=tokenizer,
         mlm=True,
