@@ -22,8 +22,9 @@ from train_tokenizer import train_tokenizer
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--accumulation_steps", type=int, default=1)
-    parser.add_argument("--batch_size", type=int, default=32)
+    parser.add_argument("--batch_size", type=int, default=64)
     parser.add_argument("--config_source", type=str, default="roberta-base")
+    parser.add_argument("--checkpoint_dir", type=str, default=None)
     parser.add_argument("--data_dir", type=str, default="./bg_data")
     parser.add_argument("--dataloader_num_workers", type=int, default=2)
     parser.add_argument("--device", type=str, default="cuda")
@@ -132,5 +133,10 @@ if __name__ == "__main__":
         train_dataset=train_dataset,
         eval_dataset=test_dataset,
     )
-    trainer.train()
+
+    if args.checkpoint_dir:
+        trainer.train(args.checkpoint_dir)
+    else:
+        trainer.train()
+
     trainer.save_model(args.save_dir)
