@@ -4,12 +4,16 @@ from typing import List
 
 
 def prepare_pretraining_data(
-    tokenizer: AutoTokenizer, file_paths: List[str], max_length: int
+    tokenizer: AutoTokenizer,
+    file_paths: List[str],
+    max_length: int,
+    pack_sequences_to_max_length: bool = False,
 ) -> List[str]:
-    lines = build_textline_list(file_paths)
+    texts = build_textline_list(file_paths)
     print("Packing sequences...")
-    packed_sequences = pack_sequences(lines, tokenizer, max_length)
-    return packed_sequences
+    if pack_sequences_to_max_length:
+        texts = pack_sequences(texts, tokenizer, max_length)
+    return texts
 
 
 def build_textline_list(file_paths: List[str]):
@@ -31,7 +35,9 @@ def build_textline_list(file_paths: List[str]):
     return lines
 
 
-def pack_sequences(texts: List[str], tokenizer: AutoTokenizer, max_length: int) -> List[str]:
+def pack_sequences(
+    texts: List[str], tokenizer: AutoTokenizer, max_length: int
+) -> List[str]:
     data = []
     concat_len = 0
     concat_string = ""

@@ -72,9 +72,12 @@ if __name__ == "__main__":
     train_dataset = PretrainingDataset(train_data, tokenizer, args.max_length)
     test_dataset = PretrainingDataset(test_data, tokenizer, args.max_length)
     config = AutoConfig.from_pretrained(args.config_source, vocab_size=args.vocab_size)
-    model = AutoModelForMaskedLM(config=config)
+    model = AutoModelForMaskedLM.from_pretrained(config=config)
     collator = DataCollatorForLanguageModeling(
-        tokenizer=tokenizer, mlm=True, mlm_probability=args.mlm_probability
+        tokenizer=tokenizer,
+        mlm=True,
+        mlm_probability=args.mlm_probability,
+        pad_to_multiple_of=2,
     )
     training_args = TrainingArguments(
         dataloader_num_workers=args.num_workers,
