@@ -117,7 +117,7 @@ if __name__ == "__main__":
         fp16=True,
         gradient_accumulation_steps=args.accumulation_steps,
         learning_rate=args.learning_rate,
-        load_best_model_at_end=True
+        load_best_model_at_end=True,
         logging_steps=args.logging_steps,
         lr_scheduler_type=args.scheduler,
         num_train_epochs=args.epochs,
